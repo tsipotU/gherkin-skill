@@ -108,12 +108,32 @@ If the project has no existing convention, suggest `features/` in the project ro
 
 **For brand-new projects with no existing Gherkins**, help the user set up the structure from scratch. Suggest a sensible directory layout based on the project type and ask where they'd like to put their feature files. This is also a good moment to establish tagging and naming conventions early — it's easier to start consistent than to fix it later.
 
-### 6. Summary
+### 6. Glossary Check
+
+After writing the `.feature` file, check if the project has a glossary (`glossary/glossary.config.yml`). If it does:
+
+1. Read the relevant glossary context files (based on scope) plus `core.glossary.yml`
+2. Scan the new scenarios for domain terms — nouns in Given/When/Then steps that look like business concepts (e.g., "Cart", "Order", "Wishlist", "Coupon")
+3. Compare against existing glossary terms (checking `name`, `aliases`, `code_name`, and `ui_label`)
+4. If you find terms that aren't in the glossary, mention them at the end of your summary:
+
+> I noticed these terms in the new scenarios that aren't in your glossary yet:
+> - **Wishlist** — used in 3 scenarios
+> - **Gift Card** — used in 1 scenario
+>
+> Want to add definitions for any of these?
+
+If the user says yes, hand off to the glossary skill (or walk through the add flow if the glossary skill isn't available).
+
+If the project has no glossary, skip this step silently — don't suggest creating one here.
+
+### 7. Summary
 
 After writing, provide a brief summary:
 - How many scenarios were added
 - Which file was created or updated
 - Any conflicts that were flagged and how they were resolved
+- Any new terms suggested for the glossary (if applicable)
 - Suggested next scenarios to consider (if the feature has more depth to explore)
 
 ## Example
