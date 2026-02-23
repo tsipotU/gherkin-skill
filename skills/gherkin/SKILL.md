@@ -49,42 +49,28 @@ If existing Gherkin files are found:
 
 If a **conflict** is detected (an existing scenario covers the same behavior, even if worded differently), flag it clearly:
 
-> **Heads up:** I found an existing scenario in `features/auth/login.feature` that already covers this behavior:
+> **Heads up:** I found an existing scenario in `features/catalogue/pricing.feature` that already covers this behavior:
 >
 > ```gherkin
-> Scenario: User enters incorrect password
->   Given a registered user "alice@example.com"
->   When they attempt to log in with password "wrong123"
->   Then they should see "Invalid credentials"
+> Scenario: Discount cannot be applied to already-reduced items
+>   Given a product marked as "On Sale"
+>   When a staff member applies a loyalty discount to it
+>   Then they should see "Promotional discounts cannot be combined"
 > ```
 >
 > Your new scenario achieves the same thing. Want to skip it, replace the existing one, or keep both?
 
 Conflict detection is about **behavioral equivalence**, not identical wording. Two scenarios that test "wrong password shows error" are duplicates even if the steps are phrased differently.
 
+For file placement and naming conventions, read `references/organization.md`.
+
 ### 3. Write the Scenarios
 
-When writing Gherkin, follow these principles:
+When writing Gherkin, apply these reference files:
 
-**Business language, not code.** Write as if explaining behavior to a product manager. "Given the user is on the login page" — not "Given the LoginController is instantiated."
-
-**One behavior per scenario.** If a scenario needs to verify two independent things, split it into two scenarios. Each scenario should test exactly one path through the feature.
-
-**3-5 steps per scenario.** If you need more, the scenario is probably testing too much. Rethink and split.
-
-**Descriptive scenario names.** The name should tell you what happens without reading the steps. "User with expired password is prompted to reset" beats "Test case 4."
-
-**Use Background for shared setup.** If every scenario in a feature starts with the same Given steps, pull them into a Background block.
-
-**Use Scenario Outlines for data variations.** When the same flow applies to multiple inputs (valid/invalid emails, different user roles), use a Scenario Outline with an Examples table instead of duplicating scenarios.
-
-**Use Rules to group related scenarios.** When a feature has distinct business rules (e.g., "Password requirements" vs "Account lockout"), group scenarios under Rule blocks.
-
-**Tag thoughtfully.** Use tags like `@smoke`, `@critical`, `@wip` to help organize and filter. Follow any tagging conventions already present in the project.
-
-**Support internationalization.** Gherkin supports writing scenarios in many spoken languages. When the user asks for scenarios in a non-English language, add the language header `# language: xx` as the first line of the `.feature` file. This tells test runners which keyword translations to use. For example, French uses `Fonctionnalité`, `Scénario`, `Soit`, `Quand`, `Alors`. Default to English when the user doesn't specify a language. Common language codes: `fr` (French), `de` (German), `es` (Spanish), `nl` (Dutch), `ja` (Japanese), `zh-CN` (Chinese). For the full list, see the [Cucumber i18n reference](https://cucumber.io/docs/gherkin/languages/).
-
-For the full syntax reference, read `references/gherkin-syntax.md`.
+- **Syntax and keywords:** `references/gherkin-syntax.md` — structure, keyword definitions, step arguments, Scenario Outline syntax, and the `# language: xx` header for non-English scenarios
+- **Writing quality:** `references/best-practices.md` — one behavior per scenario, step count, naming, Background, Outline, Rules, and tag guidance
+- **Review pass:** `references/anti-patterns.md` — before presenting to the user, scan for technical language in steps, dependent scenarios, vague step names, and mixed Given/When intent
 
 ### 4. Present and Confirm
 
@@ -99,14 +85,9 @@ Ask the user to review and suggest changes before finalizing.
 
 **If an existing `.feature` file covers this feature area**, append the new scenarios to it. Place them logically — under the appropriate `Rule` block if one exists, or at the end of the file.
 
-**If no existing file covers this area**, create a new `.feature` file. Follow the project's file organization pattern. Common conventions:
-- `features/` or `test/features/` directory
-- Named after the feature: `login.feature`, `checkout.feature`
-- Subdirectories for feature areas: `features/auth/`, `features/payments/`
+**If no existing file covers this area**, create a new `.feature` file.
 
-If the project has no existing convention, suggest `features/` in the project root and let the user decide.
-
-**For brand-new projects with no existing Gherkins**, help the user set up the structure from scratch. Suggest a sensible directory layout based on the project type and ask where they'd like to put their feature files. This is also a good moment to establish tagging and naming conventions early — it's easier to start consistent than to fix it later.
+For directory layouts, naming conventions, when to create vs. append, and how to set up structure for brand-new projects, read `references/organization.md`.
 
 ### 6. Glossary Check
 
@@ -171,15 +152,15 @@ Feature: Password Reset
   Rule: Requesting a reset
 
     Scenario: User requests a password reset for a registered email
-      Given a registered user with email "alice@example.com"
+      Given a registered user with email "morgan@example.com"
       When they request a password reset
-      Then they should receive a reset email at "alice@example.com"
+      Then they should receive a reset email at "morgan@example.com"
       And they should see "Check your email for reset instructions"
 
   Rule: Using the reset link
 
     Scenario: User resets password with a valid link
-      Given a valid password reset link for "alice@example.com"
+      Given a valid password reset link for "morgan@example.com"
       When they set a new password "NewSecure123!"
       Then their password should be updated
       And they should be redirected to the login page
