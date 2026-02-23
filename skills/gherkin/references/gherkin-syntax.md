@@ -48,41 +48,65 @@ Feature: Short feature title
 
 **Doc Strings** — multi-line text:
 ```gherkin
-Given a blog post with body:
+Given a support ticket with description:
   """
-  This is the blog post body.
-  It spans multiple lines.
+  The checkout page fails to load when I use Safari.
+  This has happened three times this week.
   """
 ```
 
 **Data Tables** — structured data:
 ```gherkin
-Given the following users exist:
-  | name   | email              |
-  | Alice  | alice@example.com  |
-  | Bob    | bob@example.com    |
+Given the following products are in the catalogue:
+  | name              | sku      |
+  | Ceramic Mug       | MUG-001  |
+  | Bamboo Notebook   | NB-042   |
 ```
 
 ## Scenario Outline
 
 ```gherkin
-Scenario Outline: Eating changes cucumber count
-  Given there are <start> cucumbers
-  When I eat <eat> cucumbers
-  Then I should have <left> cucumbers
+Scenario Outline: Applying a discount reduces the basket total
+  Given a basket total of <original>
+  When a <percent>% discount voucher is applied
+  Then the payable amount should be <final>
 
   Examples:
-    | start | eat | left |
-    | 12    | 5   | 7    |
-    | 20    | 5   | 15   |
+    | original | percent | final |
+    | 100      | 10      | 90    |
+    | 80       | 25      | 60    |
 ```
 
-## Best Practices
+## Internationalization
 
-- 3-5 steps per scenario maximum
-- Write in business language, not technical implementation
-- `Then` steps should observe user-visible outcomes, not database internals
-- Keep `Background` short (under 4 lines)
-- Use vivid, descriptive scenario names
-- One behavior per scenario — if you need "and also", split it
-- Tags help organize: `@smoke`, `@wip`, `@critical`, `@slow`
+Gherkin supports writing scenarios in many spoken languages. When the user asks for scenarios in a non-English language, add the `# language: xx` header as the first line of the `.feature` file. This tells the test runner which keyword translations to use.
+
+```gherkin
+# language: fr
+Fonctionnalité: Réservation d'une table
+  Les clients peuvent réserver une table dans le restaurant.
+
+  Scénario: Le client réserve une table disponible
+    Soit une table disponible le "14 septembre" à 19h pour 2 personnes
+    Quand le client réserve pour 2 personnes à 19h
+    Alors sa réservation devrait être confirmée
+```
+
+Default to English when the user doesn't specify a language.
+
+**Common language codes:**
+
+| Code | Language |
+|------|----------|
+| `en` | English (default) |
+| `fr` | French |
+| `de` | German |
+| `es` | Spanish |
+| `nl` | Dutch |
+| `ja` | Japanese |
+| `zh-CN` | Chinese (Simplified) |
+| `pt` | Portuguese |
+| `it` | Italian |
+| `ru` | Russian |
+
+For the full list of supported languages and keyword translations, see the [Cucumber i18n reference](https://cucumber.io/docs/gherkin/languages/).
