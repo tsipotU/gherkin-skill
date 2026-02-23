@@ -1,0 +1,8 @@
+{
+  "name": "gherkin",
+  "description": "Create and manage Gherkin BDD feature specifications. Walks you through writing .feature files interactively — expands scenarios, detects conflicts with existing specs, supports i18n, and follows Cucumber conventions.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Emiel"
+  }
+}
