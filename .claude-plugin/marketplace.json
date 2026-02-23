@@ -7,6 +7,10 @@
     {
       "name": "gherkin",
       "source": "./"
+    },
+    {
+      "name": "glossary",
+      "source": "github:tsipotU/glossary-skill"
     }
   ]
 }
